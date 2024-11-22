@@ -1,0 +1,90 @@
+name: Publish Image to GHCR
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - "**.txt"
+  schedule:
+    - cron: "0 0 * * 0"
+
+env:
+  IMAGE_NAME: llama-server-vulkan
+  MODEL: Llama-3.2-3B-Instruct
+  QUANT: Q4_K_M
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      packages: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install huggingface-cli
+        uses: BSFishy/pip-action@v1
+        with:
+          packages: huggingface_hub[cli]
+
+      - name: Download GGUF
+        run: |
+          huggingface-cli download bartowski/${{ env.MODEL }}-GGUF --include "${{ env.MODEL }}-${{ env.QUANT }}.gguf" --local-dir .
+
+      - name: Build Image with Buildah
+        id: build_image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          containerfiles: ./Containerfile
+          image: ${{ env.IMAGE_NAME }}
+          build-args: |
+            MODEL=${{ env.MODEL }}
+            QUANT=${{ env.QUANT }}
+          labels: |
+            io.artifacthub.package.readme-url=https://raw.githubusercontent.com/${{ github.repository }}/main/README.md
+            org.opencontainers.image.url=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=${{ env.MODEL }}-${{ env.QUANT }}.gguf
+            org.opencontainers.image.source=https://huggingface.co/bartowski/${{ env.MODEL }}-GGUF
+
+      - name: Start server
+        uses: mathiasvr/command-output@v2.0.0
+        id: container
+        with:
+          run: |
+            podman run -d -p 8001:8080 -e LLAMA_ARG_N_GPU_LAYERS=0 localhost/${{ env.IMAGE_NAME }}
+
+      - name: Wait for server to load
+        uses: juliangruber/sleep-action@v2.0.0
+        with:
+          time: 5s
+
+      - name: Get chat completion
+        uses: mathiasvr/command-output@v2.0.0
+        id: api
+        with:
+          run: |
+            curl -v \
+            -H "Content-Type: application/json" \
+            -d '{"messages":[{"role":"user","content":"who are you and what can you do?"}]}' \
+            http://127.0.0.1:8001/v1/chat/completions
+
+      - name: Format response
+        uses: direct-actions/jq@v0.1.0
+        with:
+          input: ${{ steps.api.outputs.stdout }}
+          filter: ".choices[0].message.content"
+          raw-output: true
+
+      - name: Print server logs
+        run: |
+          podman logs ${{ steps.container.outputs.stdout }}
+
+      - name: Push Image to GHCR
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: ghcr.io/${{ github.repository_owner }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
