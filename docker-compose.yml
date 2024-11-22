@@ -1,15 +1,13 @@
-version: '3.8'
-
+version: "3.8"
 services:
   llama-server-vulkan:
     image: ghcr.io/kth8/llama-server-vulkan
     container_name: llama-server-vulkan
+    init: true
+    labels:
+      - "io.containers.autoupdate=registry"
     ports:
       - "8001:8080"
-    init: true
     devices:
       - /dev/kfd
       - /dev/dri
-    labels:
-      io.containers.autoupdate: registry
-
