@@ -26,7 +26,7 @@ ARG QUANT
 WORKDIR /app
 
 RUN apt update && \
-    apt install -y mesa-vulkan-drivers libgomp1 curl --no-install-recommends && \
+    apt install -y mesa-vulkan-drivers libgomp1 --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /llama.cpp/build/bin/llama-server .
