@@ -46,6 +46,4 @@ ENV LLAMA_ARG_N_PARALLEL=3
 ENV LLAMA_ARG_N_GPU_LAYERS=99
 ENV LLAMA_ARG_MODEL=${MODEL}-${QUANT}.gguf
 
-HEALTHCHECK CMD curl --fail http://127.0.0.1:8080/health || exit 1
-
 CMD ["/app/llama-server"]
