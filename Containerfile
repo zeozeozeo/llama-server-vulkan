@@ -34,7 +34,6 @@ COPY --from=builder /llama.cpp/build/src/libllama.so .
 COPY --from=builder /llama.cpp/build/ggml/src/libggml-base.so .
 COPY --from=builder /llama.cpp/build/ggml/src/libggml.so .
 COPY --from=builder /llama.cpp/build/ggml/src/ggml-cpu/libggml-cpu.so .
-COPY --from=builder /llama.cpp/build/ggml/src/ggml-amx/libggml-amx.so .
 COPY --from=builder /llama.cpp/build/ggml/src/ggml-vulkan/libggml-vulkan.so .
 
 COPY ${MODEL}-${QUANT}.gguf .
