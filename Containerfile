@@ -16,6 +16,8 @@ RUN cmake -B build \
 
 RUN cmake --build build --config llama-server
 
+RUN ldd /llama.cpp/build/bin/llama-server
+
 FROM debian:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -30,11 +32,11 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /llama.cpp/build/bin/llama-server .
-COPY --from=builder /llama.cpp/build/src/libllama.so .
-COPY --from=builder /llama.cpp/build/ggml/src/libggml-base.so .
-COPY --from=builder /llama.cpp/build/ggml/src/libggml.so .
-COPY --from=builder /llama.cpp/build/ggml/src/ggml-cpu/libggml-cpu.so .
-COPY --from=builder /llama.cpp/build/ggml/src/ggml-vulkan/libggml-vulkan.so .
+COPY --from=builder /llama.cpp/build/bin/libllama.so .
+COPY --from=builder /llama.cpp/build/bin/libggml-base.so .
+COPY --from=builder /llama.cpp/build/bin/libggml.so .
+COPY --from=builder /llama.cpp/build/bin/libggml-cpu.so .
+COPY --from=builder /llama.cpp/build/bin/libggml-vulkan.so .
 
 COPY ${MODEL}-${QUANT}.gguf .
 
