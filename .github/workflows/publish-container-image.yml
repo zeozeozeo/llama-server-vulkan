@@ -11,7 +11,7 @@ on:
 
 env:
   IMAGE_NAME: llama-server-vulkan
-  MODEL: Llama-3.2-3B-Instruct
+  MODEL: google_gemma-3-4b-it
   QUANT: Q4_K_M
 
 jobs:
