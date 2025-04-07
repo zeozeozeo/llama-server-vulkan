@@ -11,6 +11,7 @@ WORKDIR /llama.cpp
 
 RUN cmake -B build \
     -DGGML_VULKAN=1 \
+    -DLLAMA_CURL=OFF \
     -DCMAKE_C_FLAGS="-march=sandybridge -mtune=generic -mno-avx -mno-avx2 -mno-bmi -mno-bmi2" \
     -DCMAKE_CXX_FLAGS="-march=sandybridge -mtune=generic -mno-avx -mno-avx2 -mno-bmi -mno-bmi2"
 
