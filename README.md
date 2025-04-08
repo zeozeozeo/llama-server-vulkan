@@ -15,7 +15,7 @@ docker container run \
 ```
 Verify if the server is running by going to http://127.0.0.1:8001 in your web browser or using the terminal:
 ```
-curl http://127.0.0.1:8001/v1/chat/completions -d '{"messages":[{"role":"user","content":"Hello"}]}'
+curl -X POST http://127.0.0.1:8001/v1/chat/completions -H "Content-Type: application/json" -d '{"messages":[{"role":"user","content":"Hello"}]}'
 ```
 To load another model you can download the GGUF from [Hugging Face](https://huggingface.co) then mount that into the container and set the `LLAMA_ARG_MODEL` environment variable, for example by adding this to the Docker run command:
 ```
