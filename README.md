@@ -7,6 +7,7 @@ docker container run \
   --device /dev/kfd \
   --device /dev/dri \
   --read-only \
+  --tmpfs /root/.cache/mesa_shader_cache \
   --restart always \
   --name llama-vulkan \
   --label io.containers.autoupdate=registry \

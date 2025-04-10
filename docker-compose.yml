@@ -8,6 +8,8 @@ services:
     devices:
       - /dev/kfd:/dev/kfd
       - /dev/dri:/dev/dri
+    tmpfs:
+      - /root/.cache/mesa_shader_cache
     ports:
       - "8001:8080"
     labels:
