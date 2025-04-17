@@ -3,7 +3,7 @@ FROM debian:latest AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && \
-    apt install -y libvulkan-dev glslc cmake git build-essential
+    apt install -y libvulkan-dev glslc cmake git build-essential libcurl4-openssl-dev
 
 RUN git clone --depth 1 https://github.com/ggerganov/llama.cpp
 
@@ -11,7 +11,7 @@ WORKDIR /llama.cpp
 
 RUN cmake -B build \
     -DGGML_VULKAN=1 \
-    -DLLAMA_CURL=OFF \
+    -DLLAMA_CURL=ON \
     -DCMAKE_C_FLAGS="-march=sandybridge -mtune=generic -mno-avx -mno-avx2 -mno-bmi -mno-bmi2" \
     -DCMAKE_CXX_FLAGS="-march=sandybridge -mtune=generic -mno-avx -mno-avx2 -mno-bmi -mno-bmi2"
 
