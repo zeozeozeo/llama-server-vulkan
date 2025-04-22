@@ -9,7 +9,7 @@ FROM almalinux:9-minimal
 ARG MODEL
 ARG QUANT
 
-RUN microdnf -y install mesa-vulkan-drivers && \
+RUN microdnf -y install mesa-vulkan-drivers libgomp && \
     microdnf clean all && \
     rm -rf /var/cache/dnf
 

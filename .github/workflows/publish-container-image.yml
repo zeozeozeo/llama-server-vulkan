@@ -34,7 +34,7 @@ jobs:
 
       - name: Checksum GGUF
         run: |
-          sha256sum ${{ matrix.model }}-${{ env.QUANT }}.gguf
+          sha256sum ${{ env.MODEL }}-${{ env.QUANT }}.gguf
 
       - name: Build Image with Buildah
         id: build_image
