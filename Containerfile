@@ -9,8 +9,8 @@ FROM almalinux:9-minimal
 ARG MODEL
 ARG QUANT
 
-RUN dnf -y install mesa-vulkan-drivers && \
-    dnf clean all && \
+RUN microdnf -y install mesa-vulkan-drivers && \
+    microdnf clean all && \
     rm -rf /var/cache/dnf
 
 COPY --from=builder /llama.cpp/build/bin/llama-server .
