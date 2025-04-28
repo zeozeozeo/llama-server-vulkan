@@ -11,8 +11,8 @@ on:
 
 env:
   IMAGE_NAME: llama-server-vulkan
-  MODEL: google_gemma-3-1b-it-qat
-  QUANT: Q4_0
+  MODEL: Qwen_Qwen3-1.7B
+  QUANT: Q4_K_M
 
 jobs:
   build:
