@@ -14,7 +14,7 @@ docker container run \
   --name llama-vulkan \
   --label io.containers.autoupdate=registry \
   --publish 8001:8080 \
-  -v /path/to/your.gguf:/app/your/.gguf \
+  -v /path/to/your.gguf:/app/your.gguf \
   -e LLAMA_ARG_MODEL=your.gguf \
   ghcr.io/zeozeozeo/llama-server-vulkan:latest
 ```
