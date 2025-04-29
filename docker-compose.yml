@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   llama-vulkan:
-    image: ghcr.io/kth8/llama-server-vulkan:latest
+    image: ghcr.io/zeozeozeo/llama-server-vulkan:latest
     container_name: llama-vulkan
     restart: always
     read_only: true
