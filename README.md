@@ -16,7 +16,6 @@ docker container run \
   --publish 8001:8080 \
   -v /path/to/your.gguf:/app/your/.gguf \
   -e LLAMA_ARG_MODEL=your.gguf \
-  -e LLAMA_ARG_CTX_SIZE=4096 \
   ghcr.io/zeozeozeo/llama-server-vulkan:latest
 ```
 
